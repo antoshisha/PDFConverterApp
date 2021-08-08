@@ -13,7 +13,8 @@ import java.util.*;
 
 @Component
 public class FreemarkerConverter {
-    public String XMLConverter(List<Person> people) throws IOException, TemplateException, URISyntaxException {
+
+    public String XMLConverter(Person person) throws IOException, TemplateException, URISyntaxException {
         Configuration configuration = new Configuration(Configuration.VERSION_2_3_31);
         configuration.setDirectoryForTemplateLoading(new File(FreemarkerConverter.class.getResource("/templates").toURI()));
         configuration.setDefaultEncoding("UTF-8");
@@ -21,14 +22,12 @@ public class FreemarkerConverter {
         configuration.setLogTemplateExceptions(false);
         configuration.setWrapUncheckedExceptions(true);
         configuration.setFallbackOnNullLoopVariable(false);
-        Map<String, List<Person>> root = new HashMap<>();
-        root.put("personList", people);
-        Template template = configuration.getTemplate("person.ftl");
-        String fileName = "src/result/created.xml";
+        Map<String, Object> root = new HashMap<>();
+        root.put("person", person);
+        Template template = configuration.getTemplate("foTemplate.ftl");
+        String fileName = "src/result/FOResult.fo";
         BufferedWriter out = new BufferedWriter(
-                new OutputStreamWriter(
-                        new FileOutputStream(fileName), "ISO-8859-9"));
-
+                new OutputStreamWriter(new FileOutputStream(fileName), "ISO-8859-9"));
         template.process(root, out);
         out.flush();
         out.close();

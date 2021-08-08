@@ -6,13 +6,13 @@ import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
-import java.util.List;
+
 @Component
 public class ConverterApp {
     private final FreemarkerConverter freemarkerConverter;
     private final PDFConverter pdfConverter;
 
-    private final String jsonSource = "src/input/people.json";
+    private final String jsonSource = "src/input/person.json";
 
     public ConverterApp(FreemarkerConverter freemarkerConverter, PDFConverter pdfConverter) {
         this.freemarkerConverter = freemarkerConverter;
@@ -20,9 +20,9 @@ public class ConverterApp {
     }
 
     public void processJSONToPDF() throws IOException, TemplateException, URISyntaxException {
-        List<Person> people = JSONConverter.toJavaObject(jsonSource);
-        String convertedXML = freemarkerConverter.XMLConverter(people);
-        pdfConverter.convertToPDF(convertedXML);
+        Person person = JSONConverter.toJavaObject(jsonSource);
+        String convertedFO = freemarkerConverter.XMLConverter(person);
+        pdfConverter.convertFOToPDF(convertedFO);
     }
 
 }

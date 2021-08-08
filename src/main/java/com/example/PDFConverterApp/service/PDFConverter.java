@@ -6,28 +6,23 @@ import org.springframework.stereotype.Component;
 import javax.xml.transform.*;
 import javax.xml.transform.sax.SAXResult;
 import javax.xml.transform.stream.StreamSource;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStream;
+import java.io.*;
+
 @Component
 public class PDFConverter {
-    public void convertToPDF(String createdXML) throws IOException {
-        File xsltFile = new File("src/main/resources/templates/xslTemplate.xsl");
-        StreamSource xmlSource = new StreamSource(new File("src/result/created.xml"));
-        FopFactory fopFactory = FopFactory.newInstance(new File(".").toURI());
-        FOUserAgent foUserAgent = fopFactory.newFOUserAgent();
-        OutputStream out = new FileOutputStream("src/result/result.pdf");
-        try {
+    private final FopFactory fopFactory = FopFactory.newInstance(new File(".").toURI());
+
+    public void convertFOToPDF(String FOFilePath) {
+        try(OutputStream out = new BufferedOutputStream(new FileOutputStream("src/result/result2.pdf"))) {
+            FOUserAgent foUserAgent = fopFactory.newFOUserAgent();
             Fop fop = fopFactory.newFop(MimeConstants.MIME_PDF, foUserAgent, out);
             TransformerFactory factory = TransformerFactory.newInstance();
-            Transformer transformer = factory.newTransformer(new StreamSource(xsltFile));
-            Result res = new SAXResult(fop.getDefaultHandler());
-            transformer.transform(xmlSource, res);
-        } catch (FOPException | TransformerException e) {
+            Transformer transformer = factory.newTransformer();
+            Source src = new StreamSource(FOFilePath);
+            Result result = new SAXResult(fop.getDefaultHandler());
+            transformer.transform(src, result);
+        } catch (FOPException | TransformerException | IOException e) {
             e.printStackTrace();
-        } finally {
-            out.close();
         }
     }
 }

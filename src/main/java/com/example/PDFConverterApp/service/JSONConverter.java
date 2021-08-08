@@ -4,7 +4,6 @@ import com.example.PDFConverterApp.entity.Person;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.File;
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.List;
 
 public class JSONConverter {
@@ -14,9 +13,8 @@ public class JSONConverter {
         mapper.writeValue(new File(path), personList);
     }
 
-    public static List<Person> toJavaObject(String path) throws IOException {
-        ObjectMapper mapper = new ObjectMapper();
-        return Arrays.asList(mapper.readValue(new File(path), Person[].class));
+    public static Person toJavaObject(String path) throws IOException {
+        return new ObjectMapper().readValue(new File(path), Person.class);
     }
 
 }
