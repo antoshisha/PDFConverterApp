@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<fo:root xmlns:fo="http://www.w3.org/1999/XSL/Format">
+<fo:root xmlns:fo="http://www.w3.org/1999/XSL/Format" font-family="Helvetica">
     <fo:layout-master-set>
         <fo:simple-page-master margin-right="2cm" margin-left="2cm" margin-bottom="2cm" margin-top="2cm" page-width="21cm" page-height="29.7cm" master-name="simpleA4">
             <fo:region-body />
